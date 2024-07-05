@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1057529410275",
+    "project_id": "news-fire-d721c",
+    "storage_bucket": "news-fire-d721c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057529410275:android:3ab8a3c3575e5ff3dccbd6",
+        "android_client_info": {
+          "package_name": "com.example.news_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnKYeivP04IEdnYKuB8ZVpAw7nfOSena8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
