@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:news_firebase/model/news_model.dart';
-import 'package:news_firebase/user_post.dart';
+import 'package:news_firebase/pages/add_post_pages/user_post.dart';
 
-import '../service/fireservice.dart';
+import '../../service/fireservice.dart';
+import '../tag_menu/tag_menu.dart';
 
 class NewsList extends StatefulWidget {
+  const NewsList({super.key});
+
   @override
   State<NewsList> createState() => _NewsListState();
 }
@@ -13,6 +16,25 @@ class _NewsListState extends State<NewsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => TagMenu()));
+                },
+                child: Text("tags"))
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ManagerData().fetchDokId();
+          setState(() {});
+        },
+        child: const Text("döküman ıd getir"),
+      ),
       appBar: AppBar(
         actions: [
           IconButton(
@@ -20,7 +42,7 @@ class _NewsListState extends State<NewsList> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => NewsForm()));
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
         title: Text('News List'),
       ),
@@ -28,11 +50,11 @@ class _NewsListState extends State<NewsList> {
         future: ManagerData().fetchNews(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData == false) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           } else {
             final newsList = snapshot.data;
             return ListView.builder(

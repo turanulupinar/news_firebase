@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:news_firebase/model/news_model.dart';
 
 class ManagerData {
@@ -15,6 +16,7 @@ class ManagerData {
   Future<List<News>> fetchNews() async {
     QuerySnapshot<News> snapshot = await newsCollection.get();
     return snapshot.docs.map((doc) => doc.data()).toList();
+    // doc.data => dökümanın karşısında yer alan bütün dataalrı key value şeklinde yazar
   }
 
   // data yaz
@@ -36,6 +38,16 @@ class ManagerData {
 
     // Belgeyi güncelliyoruz
     await docRef.update(news.toFirestore());
-    
+  }
+
+  // bütün gönderilerin döküman Idsini bulma
+  fetchDokId() async {
+    var tek = await newsCollection.get();
+    for (var eleman in tek.docs) {
+      debugPrint(eleman.id);
+      debugPrint(eleman.data().title.toString());
+    }
   }
 }
+
+

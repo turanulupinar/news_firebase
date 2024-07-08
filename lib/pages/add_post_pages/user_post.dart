@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:news_firebase/model/news_model.dart';
 
-import 'service/fireservice.dart';
+import '../../service/fireservice.dart';
 
 class NewsForm extends StatefulWidget {
+  const NewsForm({super.key});
+
   @override
+
   _NewsFormState createState() => _NewsFormState();
 }
 
@@ -30,7 +33,7 @@ class _NewsFormState extends State<NewsForm> {
       setState(() {});
 
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('News added')));
+          .showSnackBar(const SnackBar(content: Text('News added')));
       _formKey.currentState!.reset();
     }
   }
