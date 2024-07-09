@@ -22,7 +22,8 @@ class _TagMenuState extends State<TagMenu> {
   }
 
   fetchNews(String category) async {
-    newsList = await NewsCollection().fetchNewsByCategory(category);
+    newsList =
+        await TagCollectionManager().fetchNewsByCategory(category);
     setState(() {});
   }
 
@@ -78,7 +79,7 @@ class _TagMenuState extends State<TagMenu> {
   }
 }
 
-class NewsCollection {
+class TagCollectionManager {
   final CollectionReference newsCollection =
       FirebaseFirestore.instance.collection('news');
 

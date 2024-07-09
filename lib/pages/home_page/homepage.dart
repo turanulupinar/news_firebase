@@ -3,6 +3,7 @@ import 'package:news_firebase/model/news_model.dart';
 import 'package:news_firebase/pages/add_post_pages/user_post.dart';
 
 import '../../service/fireservice.dart';
+import '../search_page/search_page.dart';
 import '../tag_menu/tag_menu.dart';
 
 class NewsList extends StatefulWidget {
@@ -24,7 +25,13 @@ class _NewsListState extends State<NewsList> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => TagMenu()));
                 },
-                child: Text("tags"))
+                child: Text("tags")), 
+                 ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchPage()));
+                },
+                child: Text("arama yap"))
           ],
         ),
       ),
