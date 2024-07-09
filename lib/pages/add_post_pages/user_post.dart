@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:news_firebase/model/news_model.dart';
 
 import '../../service/fireservice.dart';
@@ -8,7 +12,6 @@ class NewsForm extends StatefulWidget {
   const NewsForm({super.key});
 
   @override
-
   _NewsFormState createState() => _NewsFormState();
 }
 
@@ -18,6 +21,40 @@ class _NewsFormState extends State<NewsForm> {
 
   final TextEditingController _imageController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+  String downloadUrl = "";
+
+  //image picker ile görsel yükle
+
+  Future<void> imagePic() async {
+    final XFile? selectedImage = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (selectedImage != null) {
+      setState(() {
+        _image = selectedImage;
+      });
+    }
+  }
+
+  Future<void> uploadImageAndPostNews() async {
+    if (_image == null) return;
+
+    File imageFile = File(_image!.path);
+    try {
+      // Görüntüyü Firebase Storage'a yükle
+      String fileName = 'images/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      UploadTask uploadTask =
+          FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+      TaskSnapshot snapshot = await uploadTask;
+      downloadUrl = await snapshot.ref.getDownloadURL();
+
+      // Firestore'a veriyi post et
+    } catch (e) {
+      print('Error uploading image: $e');
+    }
+  }
 
   //data ekle
 
@@ -26,7 +63,7 @@ class _NewsFormState extends State<NewsForm> {
       final newsNew = News(
           category: _categoryController.text,
           id: "",
-          image: _imageController.text,
+          image: downloadUrl,
           title: _titleController.text);
 
       await ManagerData().addNews(newsNew);
@@ -60,16 +97,16 @@ class _NewsFormState extends State<NewsForm> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _imageController,
-                decoration: InputDecoration(labelText: 'Image URL'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an image URL';
-                  }
-                  return null;
-                },
-              ),
+              // TextFormField(
+              //   controller: _imageController,
+              //   decoration: InputDecoration(labelText: 'Image URL'),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please enter an image URL';
+              //     }
+              //     return null;
+              //   },
+              // ),
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Title'),
@@ -80,9 +117,29 @@ class _NewsFormState extends State<NewsForm> {
                   return null;
                 },
               ),
+              _image == null
+                  ? Text('No image selected.')
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 300,
+                        width: 300,
+                        child: Image.file(
+                          File(_image!.path),
+                        ),
+                      ),
+                    ),
+              ElevatedButton(
+                  onPressed: () {
+                    imagePic();
+                  },
+                  child: Icon(Icons.camera_alt_outlined)),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _addNews,
+                onPressed: () async {
+                  await uploadImageAndPostNews();
+                  _addNews();
+                },
                 child: Text('Add News'),
               ),
             ],

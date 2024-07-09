@@ -47,3 +47,10 @@
 	<true/>
 </dict>
 </plist>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Your app needs access to the photo library.</string>
+<key>NSCameraUsageDescription</key>
+<string>Your app needs access to the camera.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Your app needs access to the microphone.</string>
+

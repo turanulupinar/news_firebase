@@ -25,8 +25,8 @@ class _NewsListState extends State<NewsList> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => TagMenu()));
                 },
-                child: Text("tags")), 
-                 ElevatedButton(
+                child: Text("tags")),
+            ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SearchPage()));
@@ -81,20 +81,21 @@ class _NewsListState extends State<NewsList> {
                   },
                   onTap: () async {},
                   child: ListTile(
-                    title: Text(news?.title ?? ""),
-                    subtitle: Text(news?.category ?? ""),
-                    trailing: IconButton(
-                        onPressed: () async {
-                          setState(() {});
-                          String dokumanId = news?.id ?? "";
-                          await ManagerData().deleteNews(dokumanId);
-                        },
-                        icon: const Icon(Icons.delete)),
-                    // leading: SizedBox(
-                    //     height: 100,
-                    //     width: 80,
-                    //     child: Image.network(news?.image ?? "")),
-                  ),
+                      title: Text(news?.title ?? ""),
+                      subtitle: Text(news?.category ?? ""),
+                      trailing: IconButton(
+                          onPressed: () async {
+                            setState(() {});
+                            String dokumanId = news?.id ?? "";
+                            await ManagerData().deleteNews(dokumanId);
+                          },
+                          icon: const Icon(Icons.delete)),
+                      leading: SizedBox(
+                          height: 100,
+                          width: 80,
+                          child:  news?.image != null
+                              ? Image.network(news?.image ?? "")
+                              : const Text("boş"))),
                 );
               },
             );
